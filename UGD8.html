@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGD Vue Basic</title>
+    <link rel="stylesheet" href="./css/bulma-0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="columns" style="margin-top: 65px">
+            <div class="column is-one-quarter" style="margin:auto;">
+                <div class="card">
+                    <header class="card-header" style="text-align: center;">
+                        <p class="card-header-title">
+                            Tebak Angka Bebas (1-10)
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="field">
+                            <p class="control">
+                                <input name="angka" class="input" type="number" v-model="tebakan" :disabled="disabled" placeholder=""/>
+                            </p>
+                        </div>
+                        <div class="field has-text-centered">
+                            <p class="control">
+                                Kesempatan : {{ kesempatan }}
+                            </p>
+                        </div>
+                        <div class="field has-text-centered">
+                            <p class="control">
+                                Jawaban : {{ nilai }}
+                            </p>
+                        </div>
+                    </div>
+                     <footer class="card-footer">
+                        <input name="tebak" type="submit" value="Tebak" style="padding: 0px!important" class="card-footer-item button is-warning" @click="tebak" :disabled="disabled"/>
+                      
+                    </footer>
+                   
+                </div>
+                <div class="has-text-centered" v-show="menang" style="margin-top: 15px;">
+                    <br> Selamat anda berhasil! Main Lagi?<br>
+                    <footer class="card-footer" style="margin-top: 15px;">
+                        <input name="tebak" type="submit" value="Main Lagi" style="padding: 0px!important" class="card-footer-item button is-warning" @click="mainLagi"/>
+                    </footer>
+                </div>
+                <div class="has-text-centered" v-show="salah" style="margin-top: 15px;">
+                    <br>Tebakan salah! Coba Lagi?<br>
+                    <footer class="card-footer" style="margin-top: 15px;">
+                        <input name="tebak" type="submit" value="Coba Lagi" style="padding: 0px!important" class="card-footer-item button is-warning" @click="cobaLagi"/>
+                    </footer>
+                </div>
+                <div class="has-text-centered" v-show="kalah" style="margin-top: 15px;">
+                    <br>Jawaban yang benar adalah {{ nilai }}! Main Lagi?<br>
+                    <footer class="card-footer" style="margin-top: 15px;">
+                        <input name="tebak" type="submit" value="Main Lagi" style="padding: 0px!important" class="card-footer-item button is-warning" @click="mainLagi"/>
+                    </footer>
+                </div>
+            </div>
+        </div>
+        <div class="has-text-centered">
+            {{ `${data.nama} | ${data.npm} | ${data.kelas}` }}
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            data: {
+                nama:'Joseph Maria Ahimsa Yubileo Windhu',
+                npm: '180709626',
+                kelas: 'D',
+            },
+            nilai: Math.floor(Math.random() * 10)+1,
+            tebakan:0,
+            kesempatan:3,
+            disabled:false,
+            menang:null,
+            kalah:null,
+            salah:null,
+        },
+        methods: {
+           tebak(){
+            if(this.tebakan == this.nilai){
+                this.menang = 1;
+            }else{
+                this.salah =1;
+                this.kesempatan--;
+                this.disabled = true;
+                if(this.kesempatan == 0){
+                    this.salah = null;
+                    this.kalah=1;
+                }
+            }              
+           },
+           cobaLagi(){
+                this.disabled = false;
+                this.salah = null;
+           },
+           mainLagi(){
+               location.reload();
+           }
+        },
+    });
+</script>
+</html>
